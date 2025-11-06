@@ -120,7 +120,7 @@ class DeviceUpgrade {
 
       self.dfuManager!.logDelegate = self.logDelegate
 
-      DispatchQueue.main.async {
+      DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
         do {
           try self.dfuManager!.start(images: images, using: config)
         } catch {
