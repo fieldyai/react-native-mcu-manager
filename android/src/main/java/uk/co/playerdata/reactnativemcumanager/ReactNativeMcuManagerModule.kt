@@ -130,12 +130,20 @@ class ReactNativeMcuManagerModule() : Module() {
         updateOptions,
         { progress ->
           appContext.executeOnJavaScriptThread {
-            progressCallback(id, progress)
+            try {
+              progressCallback(id, progress)
+            } catch (e: Throwable) {
+              Log.w(TAG, "Failed to call JS progressCallback for upgrade $id, probably JS context gone. Ignoring.", e)
+            }
           }
         },
         { state ->
           appContext.executeOnJavaScriptThread {
-            stateCallback(id, state)
+            try {
+              stateCallback(id, state)
+            } catch (e: Throwable) {
+              Log.w(TAG, "Failed to call JS stateCallback for upgrade $id, probably JS context gone. Ignoring.", e)
+            }
           }
         }
       )
